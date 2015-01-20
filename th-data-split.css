@@ -17,3 +17,7 @@ label {
   display: block;
   color: #2fa3af;
 }
+
+input.col-name {
+	width: 8em !important;
+}

@@ -32,11 +32,17 @@ A Thelma component providing solution to no problem in particular.
             </core-selector>
             <label>split by:</label>
             <input is="core-input" value="{{splitChar}}" >
+            <label>New coloumn labels:</label>
+            <template repeat="{{name, index in _splitColumnNames}}">
+              <input is="core-input" value="{{name}}" _index="{{index}}" class="col-name" on-change="{{_splitNameChanged}}" >
+            </template>
+
 
   </template>
   <script>
     Polymer({
       splitChar: ',',
+      _splitColumnNames: [],
       ready: function () {
         //open the collapse if it the component is included
         if(this.included && !this.$.ctrl_collapse.opened) {
@@ -72,10 +78,19 @@ A Thelma component providing solution to no problem in particular.
 
             self.output = self.input.map(function(item) {
               var splits = item[self.splitColumn].split(self.splitChar);
-              splits.forEach(function(split, index) {
-                item['split'+index] = splits[index].trim();
+              if(self._splitColumnNames.length===0 || self._splitColumnNames.length!==splits.length) {
+                self.generateColumnNames(splits.length);
+              }
+              //clone item
+              var ret = {};
+              var keys = Object.keys(item);
+              keys.forEach(function(key) {
+                ret[key] = item[key];
               });
-              return item;
+              splits.forEach(function(split, index) {
+                ret[self._splitColumnNames[index]] = splits[index].trim();
+              });
+              return ret;
 
             });
 
@@ -85,7 +100,30 @@ A Thelma component providing solution to no problem in particular.
           }
         }
 
-      },     
+      }, 
+      generateColumnNames: function(n) {
+        for(var i=0; i<n; i++) {
+          if(!this._splitColumnNames[i]) {
+            this._splitColumnNames[i] = 'split'+(i+1);
+          }
+        }
+        if(n<this._splitColumnNames.length) {
+          this._splitColumnNames.splice(0,n);
+        }
+
+      }, 
+
+      _splitNameChanged: function(e, detail, selection) {
+
+        var index = selection.getAttribute('index');
+        this._splitColumnNames[index] = selection.value;
+        this._calculateOutput();
+      },
+
+      _splitColumnNamesChanged: function() {
+        this._calculateOutput();
+
+      },  
 
       showControls: function(e) {
         this.$.ctrl_collapse.toggle();
