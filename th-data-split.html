@@ -13,7 +13,7 @@ A Thelma component providing solution to no problem in particular.
 @homepage http://thelmanews.github.io/th-data-split
 -->
 
-<polymer-element name="th-data-split" attributes="input output">
+<polymer-element name="th-data-split" attributes="input output splitColumn splitChar splitColumnNames">
   <template>
     <link rel="stylesheet" href="th-data-split.css">
 
@@ -33,7 +33,7 @@ A Thelma component providing solution to no problem in particular.
             <label>split by:</label>
             <input is="core-input" value="{{splitChar}}" >
             <label>New coloumn labels:</label>
-            <template repeat="{{name, index in _splitColumnNames}}">
+            <template repeat="{{name, index in splitColumnNames}}">
               <input is="core-input" value="{{name}}" _index="{{index}}" class="col-name" on-change="{{_splitNameChanged}}" >
             </template>
 
@@ -42,7 +42,7 @@ A Thelma component providing solution to no problem in particular.
   <script>
     Polymer({
       splitChar: ',',
-      _splitColumnNames: [],
+      splitColumnNames: [],
       ready: function () {
         //open the collapse if it the component is included
         if(this.included && !this.$.ctrl_collapse.opened) {
@@ -78,7 +78,7 @@ A Thelma component providing solution to no problem in particular.
 
             self.output = self.input.map(function(item) {
               var splits = item[self.splitColumn].split(self.splitChar);
-              if(self._splitColumnNames.length===0 || self._splitColumnNames.length!==splits.length) {
+              if(self.splitColumnNames.length===0 || self.splitColumnNames.length!==splits.length) {
                 self.generateColumnNames(splits.length);
               }
               //clone item
@@ -88,7 +88,7 @@ A Thelma component providing solution to no problem in particular.
                 ret[key] = item[key];
               });
               splits.forEach(function(split, index) {
-                ret[self._splitColumnNames[index]] = splits[index].trim();
+                ret[self.splitColumnNames[index]] = splits[index].trim();
               });
               return ret;
 
@@ -103,12 +103,12 @@ A Thelma component providing solution to no problem in particular.
       }, 
       generateColumnNames: function(n) {
         for(var i=0; i<n; i++) {
-          if(!this._splitColumnNames[i]) {
-            this._splitColumnNames[i] = 'split'+(i+1);
+          if(!this.splitColumnNames[i]) {
+            this.splitColumnNames[i] = 'split'+(i+1);
           }
         }
-        if(n<this._splitColumnNames.length) {
-          this._splitColumnNames.splice(0,n);
+        if(n<this.splitColumnNames.length) {
+          this.splitColumnNames.splice(0,n);
         }
 
       }, 
@@ -116,11 +116,11 @@ A Thelma component providing solution to no problem in particular.
       _splitNameChanged: function(e, detail, selection) {
 
         var index = selection.getAttribute('index');
-        this._splitColumnNames[index] = selection.value;
+        this.splitColumnNames[index] = selection.value;
         this._calculateOutput();
       },
 
-      _splitColumnNamesChanged: function() {
+      splitColumnNamesChanged: function() {
         this._calculateOutput();
 
       },  
