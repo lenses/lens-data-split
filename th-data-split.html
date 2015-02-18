@@ -25,7 +25,7 @@ A Thelma component to split a column into columns based on a string separator
 
     <!--core-collapse shows table settings. Toggled off by default-->
     <core-collapse id="ctrl_collapse" opened="false">
-      <p class="info">Apply a filter on another column to narrow down the results.</p>
+      <p class="info">Apply a filter on a column to narrow down the results.</p>
       <label for="func_selector">Filter on column:</label>
       <core-selector id="value_selector" selected="{{splitColumn}}" valueattr="label">
         <template repeat="{{attr in _dataAttributes}}">

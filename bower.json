@@ -4,7 +4,10 @@
   "keywords": "thelma, polymer, web-components",
   "main": "th-data-split.html",
   "dependencies": {  
-    "polymer": "Polymer/polymer#~0.5.1"
+    "polymer": "Polymer/polymer#~0.5.1",
+    "core-collapse": "Polymer/core-collapse#~0.5.5",
+    "core-selector": "Polymer/core-secltor#~0.5.5",
+    "core-input": "Polymer/core-input#"
   }
 }
 

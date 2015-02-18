@@ -15,11 +15,8 @@
       <script>
         var input = new Object([{"label":"Marshawn Lynch, RB"},{"label":"Dez Bryant, WR"},{"label":"Jamaal Charles, RB"},{"label":"Antonio Brown, WR"},{"label":"Jordy Nelson, WR"},{"label":"Arian Foster, RB"},{"label":"DeMarco Murray, RB"},{"label":"Eddie Lacy, RB"},{"label":"Antonio Gates, TE"},{"label":"Rob Gronkowski, TE"}]);
 
-        document.getElementById('input').innerHTML = JSON.stringify(input, undefined, 2);
+        document.getElementById("input").innerHTML = JSON.stringify(input, undefined, 2);
       </script>
-      <p>
-
-      <p>An example of `th-data-split` looks like this:</p>
 
       <th-data-split id="split" output="{{myoutput}}"></th-data-split>
       <script>
@@ -28,7 +25,7 @@
 
         // helper function to stringify objects
         PolymerExpressions.prototype.showSplitColumns = function(object) {
-          var ret = '';
+          var ret = "";
           for (var i in split.splitColumnNames) {
             ret += JSON.stringify(object[split.splitColumnNames[i]], undefined, 2);
           }
