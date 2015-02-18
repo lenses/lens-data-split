@@ -1,14 +1,14 @@
 <link rel="import" href="../polymer/polymer.html"> 
 
 <!--
-A Thelma component providing solution to no problem in particular.
+A Thelma component to split a column into columns based on a string separator
 
 ##### Example
 
     <th-data-split></th-data-split>
 
 @element th-data-split
-@blurb Element providing solution to no problem in particular.
+@blurb Split data into columns with a separator, defaults to comma
 @status alpha
 @homepage http://thelmanews.github.io/th-data-split
 -->
@@ -21,36 +21,37 @@ A Thelma component providing solution to no problem in particular.
       <core-icon-button icon="perm-data-setting" on-click="{{showControls}}"></core-icon-button>
     </template>
 
-    <core-collapse id="ctrl_collapse">      
-
-            <p class="info">Apply a filter on another column to norrow down the results.</p>
-            <label for="func_selector">Filter on column:</label>
-            <core-selector id="value_selector" selected="{{splitColumn}}" valueattr="label">
-              <template repeat="{{attr in _dataAttributes}}">
-                <div class="col" label="{{attr}}">{{attr}}</div>
-              </template>
-            </core-selector>
-            <label>split by:</label>
-            <input is="core-input" value="{{splitChar}}" >
-            <label>New coloumn labels:</label>
-            <template repeat="{{name, index in splitColumnNames}}">
-              <input is="core-input" value="{{name}}" _index="{{index}}" class="col-name" on-change="{{_splitNameChanged}}" >
-            </template>
-
+    <!--core-collapse shows table settings. Toggled off by default-->
+    <core-collapse id="ctrl_collapse" opened="false">
+      <p class="info">Apply a filter on another column to narrow down the results.</p>
+      <label for="func_selector">Filter on column:</label>
+      <core-selector id="value_selector" selected="{{splitColumn}}" valueattr="label">
+        <template repeat="{{attr in _dataAttributes}}">
+          <div class="col" label="{{attr}}">{{attr}}</div>
+        </template>
+      </core-selector>
+      <label>split by:</label>
+      <input is="core-input" value="{{splitChar}}">
+      <label>New column labels:</label>
+      <template repeat="{{name, index in splitColumnNames}}">
+        <input is="core-input" value="{{name}}" _index="{{index}}" class="col-name" on-change="{{_splitNameChanged}}" >
+      </template>
+    </core-collapse>
 
   </template>
   <script>
     Polymer({
       splitChar: ',',
       splitColumnNames: [],
+
       ready: function () {
-        //open the collapse if it the component is included
+        //open the collapse if the component is included
         if(this.included && !this.$.ctrl_collapse.opened) {
           this.$.ctrl_collapse.toggle();
         }
       },
-      inputChanged: function() {
 
+      inputChanged: function() {
           var self = this;
           var firstItem = self.input[0];
           if(!firstItem) {
@@ -65,12 +66,10 @@ A Thelma component providing solution to no problem in particular.
             self._dataAttributes = attributes;
           }
 
-          self._calculateOutput();          
-
+          self._calculateOutput();
       }, 
 
       _calculateOutput: function() {
-
         var self = this;
         if(self.splitColumn && self.splitChar && self.splitChar.length>0)
         {
@@ -79,7 +78,7 @@ A Thelma component providing solution to no problem in particular.
             self.output = self.input.map(function(item) {
               var splits = item[self.splitColumn].split(self.splitChar);
               if(self.splitColumnNames.length===0 || self.splitColumnNames.length!==splits.length) {
-                self.generateColumnNames(splits.length);
+                self._generateColumnNames(splits.length);
               }
               //clone item
               var ret = {};
@@ -91,17 +90,15 @@ A Thelma component providing solution to no problem in particular.
                 ret[self.splitColumnNames[index]] = splits[index].trim();
               });
               return ret;
-
             });
-
           }
           else {
             //error
           }
         }
+      },
 
-      }, 
-      generateColumnNames: function(n) {
+      _generateColumnNames: function(n) {
         for(var i=0; i<n; i++) {
           if(!this.splitColumnNames[i]) {
             this.splitColumnNames[i] = 'split'+(i+1);
@@ -110,11 +107,9 @@ A Thelma component providing solution to no problem in particular.
         if(n<this.splitColumnNames.length) {
           this.splitColumnNames.splice(0,n);
         }
-
-      }, 
+      },
 
       _splitNameChanged: function(e, detail, selection) {
-
         var index = selection.getAttribute('index');
         this.splitColumnNames[index] = selection.value;
         this._calculateOutput();
@@ -122,20 +117,16 @@ A Thelma component providing solution to no problem in particular.
 
       splitColumnNamesChanged: function() {
         this._calculateOutput();
-
-      },  
+      },
 
       showControls: function(e) {
         this.$.ctrl_collapse.toggle();
       },
+
       splitColumnChanged: function(e) {
         var self= this;
-
-
         self._calculateOutput();
-
       }
-
 
     });
   </script>
