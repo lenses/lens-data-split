@@ -10,12 +10,12 @@ A Thelma component to split a column into columns based on a string separator
     <th-data-split></th-data-split>
 
 @element th-data-split
-@blurb Split data into columns with a separator, defaults to comma
+@blurb Split data into multiple columns. Splits at the separator, defaults to comma
 @status alpha
-@homepage http://thelmanews.github.io/th-data-split
+@homepage http://thelmanews.github.io/th-data-split/demo.html
 -->
 
-<polymer-element name="th-data-split" attributes="input output splitColumn splitChar splitColumnNames">
+<polymer-element name="th-data-split" attributes="input output splitCol splitChar splitColNames">
   <template>
     <link rel="stylesheet" href="th-data-split.css">
 
@@ -27,7 +27,7 @@ A Thelma component to split a column into columns based on a string separator
     <core-collapse id="ctrl_collapse" opened="false">
       <p class="info">Apply a filter on a column to narrow down the results.</p>
       <label for="func_selector">Filter on column:</label>
-      <core-selector id="value_selector" selected="{{splitColumn}}" valueattr="label">
+      <core-selector id="value_selector" selected="{{splitCol}}" valueattr="label">
         <template repeat="{{attr in _dataAttributes}}">
           <div class="col" label="{{attr}}">{{attr}}</div>
         </template>
@@ -35,7 +35,7 @@ A Thelma component to split a column into columns based on a string separator
       <label>split by:</label>
       <input is="core-input" value="{{splitChar}}">
       <label>New column labels:</label>
-      <template repeat="{{name, index in splitColumnNames}}">
+      <template repeat="{{name, index in splitColNames}}">
         <input is="core-input" value="{{name}}" _index="{{index}}" class="col-name" on-change="{{_splitNameChanged}}" >
       </template>
     </core-collapse>
@@ -43,9 +43,56 @@ A Thelma component to split a column into columns based on a string separator
   </template>
   <script>
     Polymer({
-      splitChar: ',',
-      splitColumnNames: [],
 
+      /**
+       * Input data
+       *
+       * @property input
+       * @type object
+       * @default undefined
+       */
+
+      /**
+       * Output data
+       *
+       * @property output
+       * @type object
+       * @default undefined
+       */
+
+      /**
+       * Split character. Defaults to ',''
+       *
+       * @property splitChar
+       * @type string
+       * @default ,
+       */
+      splitChar: ',',
+
+      /**
+       * Name of the original column that will be split.
+       *
+       * @property splitCol
+       * @type array
+       * @default undefined
+       */
+      splitCol: [],
+
+      /**
+       * Names of the new columns generated after the split.
+       *
+       * @property splitColNames
+       * @type array
+       * @default []
+       */
+      splitColNames: [],
+
+
+      /**
+       *  Fired when this polymer element is ready
+       *  
+       *  @event ready
+       */
       ready: function () {
         //open the collapse if the component is included
         if(this.included && !this.$.ctrl_collapse.opened) {
@@ -53,6 +100,13 @@ A Thelma component to split a column into columns based on a string separator
         }
       },
 
+      /**
+       *  Fired automatically when the input is changed.
+       *  This event parses input data, then
+       *  calls a private event to recalculate output.
+       *  
+       *  @event inputChanged
+       */
       inputChanged: function() {
         var self = this;
         var firstItem = self.input[0];
@@ -73,13 +127,13 @@ A Thelma component to split a column into columns based on a string separator
 
       _calculateOutput: function() {
         var self = this;
-        if(self.splitColumn && self.splitChar && self.splitChar.length>0)
+        if(self.splitCol && self.splitChar && self.splitChar.length>0)
         {
-          if(typeof self.input[0][self.splitColumn]==="string") {  //TODO: catch exception for split instead?
+          if(typeof self.input[0][self.splitCol]==="string") {  //TODO: catch exception for split instead?
 
             self.output = self.input.map(function(item) {
-              var splits = item[self.splitColumn].split(self.splitChar);
-              if(self.splitColumnNames.length===0 || self.splitColumnNames.length!==splits.length) {
+              var splits = item[self.splitCol].split(self.splitChar);
+              if(self.splitColNames.length===0 || self.splitColNames.length!==splits.length) {
                 self._generateColumnNames(splits.length);
               }
               //clone item
@@ -89,7 +143,7 @@ A Thelma component to split a column into columns based on a string separator
                 ret[key] = item[key];
               });
               splits.forEach(function(split, index) {
-                ret[self.splitColumnNames[index]] = splits[index].trim();
+                ret[self.splitColNames[index]] = splits[index].trim();
               });
               return ret;
             });
@@ -102,22 +156,30 @@ A Thelma component to split a column into columns based on a string separator
 
       _generateColumnNames: function(n) {
         for(var i=0; i<n; i++) {
-          if(!this.splitColumnNames[i]) {
-            this.splitColumnNames[i] = 'split'+(i+1);
+          if(!this.splitColNames[i]) {
+            this.splitColNames[i] = 'split'+(i+1);
           }
         }
-        if(n<this.splitColumnNames.length) {
-          this.splitColumnNames.splice(0,n);
+        if(n<this.splitColNames.length) {
+          this.splitColNames.splice(0,n);
         }
       },
 
       _splitNameChanged: function(e, detail, selection) {
         var index = selection.getAttribute('index');
-        this.splitColumnNames[index] = selection.value;
+        this.splitColNames[index] = selection.value;
         this._calculateOutput();
       },
 
-      splitColumnNamesChanged: function() {
+      /**
+       *  Fired automatically when 'splitColNames' are changed.
+       *  This event parses the splitColNames, then
+       *  calls a private event to recalculate output.
+       *  
+       *  @event splitColNamesChanged
+       */
+      splitColNamesChanged: function() {
+        var self = this;
         this._calculateOutput();
       },
 
@@ -125,8 +187,16 @@ A Thelma component to split a column into columns based on a string separator
         this.$.ctrl_collapse.toggle();
       },
 
-      splitColumnChanged: function(e) {
-        var self= this;
+
+      /**
+       *  Fired automatically when 'splitCol' is changed.
+       *  This event parses the new data, then
+       *  calls a private event to recalculate output.
+       *  
+       *  @event splitColChanged
+       */
+      splitColChanged: function(e) {
+        var self = this;
         self._calculateOutput();
       }
 
