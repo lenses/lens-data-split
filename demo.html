@@ -20,12 +20,35 @@
         overflow: scroll;
 
       }
-      .component {
+      #component {
         border: 1px solid #BBB;
-        margin: 15px 0;
-        padding: 3px;
+        margin: 10px;
+        padding: 5px;
         display: block;
         width: 300px;
+      }
+
+      .component::before, .component::after {
+        content: '\2794';
+        position: absolute;
+        top: 50%;
+      }
+      .component::before {
+        right: -15px;
+      }
+
+      .component::after {
+        left: -15px;
+      }
+
+      section {
+        display: inline-block;
+        margin: 8px;
+        vertical-align: top;
+        position: relative;
+      }
+      html /deep/ input[is=core-input] {
+        border-bottom: 1px solid #E5E5E5 !important;
       }
 
     </style>
@@ -34,28 +57,33 @@
   <body unresolved>
 
     <template id="auto-bind-demo" is="auto-binding">
-      <label>Input:</label>
-      <pre id="input"></pre>
+
+      <section>
+        <label>Input:</label>
+        <pre id="input">{{myinput | json}}</pre>
+      </section>
+      <section class="component">
+        <label>Component:</label>
+        <th-data-split id="component" input="{{myinput}}" output="{{myoutput}}"></th-data-split>
+      </section>
+      <section>
+        <label>Output:</label>
+        <pre>{{myoutput | json}}</pre>
+      </section>
+      
       <script>
 
         // input data
         var input = new Object([{"label":"Marshawn Lynch, RB"},{"label":"Dez Bryant, WR"},{"label":"Jamaal Charles, RB"},{"label":"Antonio Brown, WR"},{"label":"Jordy Nelson, WR"},{"label":"Arian Foster, RB"},{"label":"DeMarco Murray, RB"},{"label":"Eddie Lacy, RB"},{"label":"Antonio Gates, TE"},{"label":"Rob Gronkowski, TE"}]);
 
-        document.getElementById("input").innerHTML = JSON.stringify(input, undefined, 2);
-      </script>
-
-      <label>Component:</label>
-      <th-data-split class="component" id="split" output="{{myoutput}}"></th-data-split>
-      
-      <script>
         // show component controls
-        split.showControls();
+        component.showControls();
 
         //set the input
-        split.input = input;
+        component.input = input;
 
         //set the split column to be the first element in the input
-        split.splitCol = Object.keys(input[0])[0];
+        component.splitCol = Object.keys(input[0])[0];
 
         // helper function to stringify objects, used below like {{outputs | json}}
         PolymerExpressions.prototype.json = function(object) {
@@ -64,12 +92,6 @@
 
 
       </script>
-      <div>
-      <label>Output:</label>
-        
-          <pre>{{myoutput | json}}</pre>
-          
-      </div>
     </template>
   </body>
 
