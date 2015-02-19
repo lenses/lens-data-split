@@ -26,7 +26,7 @@ A Thelma component to split a column into columns based on a string separator
 
     <!--core-collapse shows table settings. Toggled off by default-->
     <core-collapse id="ctrl_collapse" opened="false">
-      <p class="info">Apply a filter on a column to narrow down the results.</p>
+      <p class="info">Split a column into multiple based on split character.</p>
       <label for="func_selector">Filter on column:</label>
       <core-selector id="value_selector" selected="{{splitCol}}" valueattr="label">
         <template repeat="{{attr in _dataAttributes}}">
@@ -87,6 +87,13 @@ A Thelma component to split a column into columns based on a string separator
        * @default []
        */
       splitColNames: [],
+
+      // Observe changes on below attributes and trigger _calculateOutput() when changed
+      observe: {
+        splitCol: "_calculateOutput",
+        splitChar: "_calculateOutput",
+        splitColNames: "_calculateOutput"
+      },
 
 
       // Called when <th-data-split> element is created.
@@ -158,7 +165,7 @@ A Thelma component to split a column into columns based on a string separator
         }
       },
 
-      // Triggered when user cnages the new column names
+      // Triggered when user changes the new column names
       _splitNameChanged: function(e, detail, selection) {
         var index = selection.getAttribute('index');
         this.splitColNames[index] = selection.value;
@@ -166,22 +173,10 @@ A Thelma component to split a column into columns based on a string separator
         this._calculateOutput();
       },
 
-      // Change watcher for splitColNames attribute. Triggered wheneve they are changed
-      splitColNamesChanged: function() {
-        var self = this;
-        this._calculateOutput();
-      },
-
+      // opens settings box 
       showControls: function(e) {
         this.$.ctrl_collapse.toggle();
       },
-
-
-      // Change watcher for splitCol attribute. Triggered wheneve it is changed
-      splitColChanged: function(e) {
-        var self = this;
-        self._calculateOutput();
-      }
 
     });
   </script>
