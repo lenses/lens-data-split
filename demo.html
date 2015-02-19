@@ -6,11 +6,35 @@
     <script src="../webcomponentsjs/webcomponents.js"></script>
     <link rel="import" href="th-data-split.html">
 
+    <style>
+      body {
+        font-family: sans-serif;
+        font-size: 14px;
+      }
+
+      pre {
+        border: 1px solid #EEE;
+        font-size: 12px;
+        max-width: 300px;
+        max-height: 300px;
+        overflow: scroll;
+
+      }
+      .component {
+        border: 1px solid #BBB;
+        margin: 15px 0;
+        padding: 3px;
+        display: block;
+        width: 300px;
+      }
+
+    </style>
+
   </head>
   <body unresolved>
 
     <template id="auto-bind-demo" is="auto-binding">
-      <p>Input:</p>
+      <label>Input:</label>
       <pre id="input"></pre>
       <script>
 
@@ -20,12 +44,20 @@
         document.getElementById("input").innerHTML = JSON.stringify(input, undefined, 2);
       </script>
 
-      <th-data-split id="split" output="{{myoutput}}"></th-data-split>
+      <label>Component:</label>
+      <th-data-split class="component" id="split" output="{{myoutput}}"></th-data-split>
+      
       <script>
-        split.$.ctrl_collapse.toggle();
+        // show component controls
+        split.showControls();
+
+        //set the input
         split.input = input;
 
-        // helper function to stringify objects, used below like {{outputs | jason}}
+        //set the split column to be the first element in the input
+        split.splitCol = Object.keys(input[0])[0];
+
+        // helper function to stringify objects, used below like {{outputs | json}}
         PolymerExpressions.prototype.json = function(object) {
           return JSON.stringify(object, undefined, 2);
         };
@@ -33,11 +65,10 @@
 
       </script>
       <div>
-      <p>View the output</p>
-        <template repeat="{{outputs, i in myoutput}}">
-          <pre>{{outputs | json}}</pre>
-          </div>
-       </template>
+      <label>Output:</label>
+        
+          <pre>{{myoutput | json}}</pre>
+          
       </div>
     </template>
   </body>
