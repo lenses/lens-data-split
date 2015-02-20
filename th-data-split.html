@@ -104,7 +104,7 @@ A Thelma component to split a column into columns based on a string separator
         }
       },
 
-      // Change watcher for input attribute. Triggered wheneve input is changed
+      // Change watcher for input attribute. Triggered whenever input is changed
       inputChanged: function() {
         var self = this;
         var firstItem = self.input[0];
@@ -173,7 +173,13 @@ A Thelma component to split a column into columns based on a string separator
         this._calculateOutput();
       },
 
-      // opens settings box 
+      // 
+      /**
+       *  Toggles whether the settings box is open or closed.
+       *  Defaults to closed.
+       *  
+       *  @method showControls
+       */
       showControls: function(e) {
         this.$.ctrl_collapse.toggle();
       },
