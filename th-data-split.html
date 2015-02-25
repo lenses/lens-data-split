@@ -28,15 +28,15 @@ A Thelma component to split a column into columns based on a string separator
       <!--core-collapse shows table settings. Toggled off by default-->
       <core-collapse id="ctrl_collapse" opened="false">
         <p class="info">Split a column into multiple based on split character.</p>
-        <label for="func_selector">Filter on column:</label>
-        <core-selector id="value_selector" selected="{{splitCol}}" valueattr="label">
+        <label class="label" for="func_selector">Filter on column:</label>
+        <core-selector class="selector" id="value_selector" selected="{{splitCol}}" valueattr="label">
           <template repeat="{{attr in _dataAttributes}}">
             <div class="col" label="{{attr}}">{{attr}}</div>
           </template>
         </core-selector>
-        <label>split by:</label>
+        <label class="label">split by:</label>
         <input is="core-input" value="{{splitChar}}">
-        <label>New column labels:</label>
+        <label class="label">New column labels:</label>
         <template repeat="{{name, index in splitColNames}}">
           <input is="core-input" value="{{name}}" _index="{{index}}" class="col-name" on-change="{{_splitNameChanged}}" >
         </template>
