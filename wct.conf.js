@@ -1,8 +1,8 @@
 module.exports = {
   verbose: true,
   plugins: {
-    // local: {
-    //   browsers: ['firefox', 'canary', 'safari']
-    // }
+    local: {
+      browsers: ['firefox', 'canary']
+    }
   },
 };
