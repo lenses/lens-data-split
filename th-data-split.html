@@ -19,27 +19,29 @@ A Thelma component to split a column into columns based on a string separator
 <polymer-element name="th-data-split" attributes="input output splitCol splitChar splitColNames">
   <template>
     <link rel="stylesheet" href="th-data-split.css">
+    <div class="th-container">
 
-    <template if="{{!included}}">
-      <core-icon-button icon="perm-data-setting" on-click="{{showControls}}"></core-icon-button>
-    </template>
-
-    <!--core-collapse shows table settings. Toggled off by default-->
-    <core-collapse id="ctrl_collapse" opened="false">
-      <p class="info">Split a column into multiple based on split character.</p>
-      <label for="func_selector">Filter on column:</label>
-      <core-selector id="value_selector" selected="{{splitCol}}" valueattr="label">
-        <template repeat="{{attr in _dataAttributes}}">
-          <div class="col" label="{{attr}}">{{attr}}</div>
-        </template>
-      </core-selector>
-      <label>split by:</label>
-      <input is="core-input" value="{{splitChar}}">
-      <label>New column labels:</label>
-      <template repeat="{{name, index in splitColNames}}">
-        <input is="core-input" value="{{name}}" _index="{{index}}" class="col-name" on-change="{{_splitNameChanged}}" >
+      <template if="{{!included}}">
+        <core-icon-button icon="perm-data-setting" on-click="{{showControls}}"></core-icon-button>
       </template>
-    </core-collapse>
+
+      <!--core-collapse shows table settings. Toggled off by default-->
+      <core-collapse id="ctrl_collapse" opened="false">
+        <p class="info">Split a column into multiple based on split character.</p>
+        <label for="func_selector">Filter on column:</label>
+        <core-selector id="value_selector" selected="{{splitCol}}" valueattr="label">
+          <template repeat="{{attr in _dataAttributes}}">
+            <div class="col" label="{{attr}}">{{attr}}</div>
+          </template>
+        </core-selector>
+        <label>split by:</label>
+        <input is="core-input" value="{{splitChar}}">
+        <label>New column labels:</label>
+        <template repeat="{{name, index in splitColNames}}">
+          <input is="core-input" value="{{name}}" _index="{{index}}" class="col-name" on-change="{{_splitNameChanged}}" >
+        </template>
+      </core-collapse>
+    </div>
 
   </template>
   <script>
