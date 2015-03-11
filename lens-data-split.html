@@ -7,18 +7,18 @@ A Thelma component to split a column into columns based on a string separator
 
 ##### Example
 
-    <th-data-split></th-data-split>
+    <lens-data-split></lens-data-split>
 
-@element th-data-split
+@element lens-data-split
 @group Lenses transform component
 @blurb Split data into multiple columns. Splits at the separator, defaults to comma
 @status alpha
-@homepage http://thelmanews.github.io/th-data-split/index.html
+@homepage http://thelmanews.github.io/lens-data-split/index.html
 -->
 
-<polymer-element name="th-data-split" attributes="input output splitCol splitChar splitColNames">
+<polymer-element name="lens-data-split" attributes="input output splitCol splitChar splitColNames">
   <template>
-    <link rel="stylesheet" href="th-data-split.css">
+    <link rel="stylesheet" href="lens-data-split.css">
     <div class="th-container">
 
       <template if="{{!included}}">
@@ -98,7 +98,7 @@ A Thelma component to split a column into columns based on a string separator
       },
 
 
-      // Called when <th-data-split> element is created.
+      // Called when <lens-data-split> element is created.
       ready: function () {
         //open the collapse if the component is included
         if(this.included && !this.$.ctrl_collapse.opened) {

@@ -1,8 +1,8 @@
 {
-  "name": "th-data-split",
+  "name": "lens-data-split",
   "version": "0.0.0",
   "keywords": "thelma, polymer, web-components",
-  "main": "th-data-split.html",
+  "main": "lens-data-split.html",
   "dependencies": {  
     "polymer": "Polymer/polymer#~0.5.1",
     "core-collapse": "Polymer/core-collapse#~0.5.5",

@@ -1,3 +1,3 @@
-# th-data-split
+# lens-data-split
 
-See the [component page](http://thelmanews.github.io/th-data-split) for more information.
+See the [component page](http://thelmanews.github.io/lens-data-split) for more information.
