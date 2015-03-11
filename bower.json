@@ -1,16 +1,15 @@
 {
-  "name": "th-data-split",
+  "name": "lens-data-split",
   "version": "0.0.0",
   "keywords": "thelma, polymer, web-components",
-  "main": "th-data-split.html",
-  "dependencies": {  
+  "main": "lens-data-split.html",
+  "dependencies": {
     "polymer": "Polymer/polymer#~0.5.1",
     "core-collapse": "Polymer/core-collapse#~0.5.5",
     "core-selector": "Polymer/core-selector#~0.5.5",
-    "core-input": "Polymer/core-input#"
+    "core-input": "polymer/core-input#~0.5.5"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^1.1.0"
   }
 }
-

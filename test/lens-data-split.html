@@ -6,12 +6,12 @@
   <script src="../../webcomponentsjs/webcomponents.js"></script>
   <script src="../../web-component-tester/browser.js"></script>
 
-  <link rel="import" href="../th-data-split.html">
+  <link rel="import" href="../lens-data-split.html">
 
 </head>
 <body>
 
-  <th-data-split id="data-split"></th-data-split>
+  <lens-data-split id="data-split"></lens-data-split>
 
   <script>
     var should = chai.should();
@@ -24,7 +24,7 @@
     var input = new Object([{"label":"Marshawn Lynch, RB"},{"label":"Dez Bryant, WR"},{"label":"Jamaal Charles, RB"},{"label":"Antonio Brown, WR"},{"label":"Jordy Nelson, WR"},{"label":"Arian Foster, RB"},{"label":"DeMarco Murray, RB"},{"label":"Eddie Lacy, RB"},{"label":"Antonio Gates, TE"},{"label":"Rob Gronkowski, TE"}]);
 
     // testing suite
-    suite("<th-data-split>", function() {
+    suite("<lens-data-split>", function() {
 
       test("component can be created as an object", function(done) {
         should.exist(dataSplit);
