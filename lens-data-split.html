@@ -155,10 +155,6 @@ A Thelma component to split a column into columns based on a string separator
         }
       },
 
-      outputChanged: function() {
-        this.fire("th-output-changed", this);
-      },
-
       // Creates defualt column names (split1, split2 etc.)
       _generateColumnNames: function(n) {
         for(var i=0; i<n; i++) {
