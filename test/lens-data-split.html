@@ -17,9 +17,6 @@
     var should = chai.should();
     var dataSplit = document.querySelector("#data-split");
 
-    // the event listener callback will be added / removed in every async test
-    var callback = function() {};
-
     // some input data
     var input = new Object([{"label":"Marshawn Lynch, RB"},{"label":"Dez Bryant, WR"},{"label":"Jamaal Charles, RB"},{"label":"Antonio Brown, WR"},{"label":"Jordy Nelson, WR"},{"label":"Arian Foster, RB"},{"label":"DeMarco Murray, RB"},{"label":"Eddie Lacy, RB"},{"label":"Antonio Gates, TE"},{"label":"Rob Gronkowski, TE"}]);
 
@@ -32,86 +29,58 @@
       });
 
       test("accepts input", function(done) {
-
-        // set the event listener callback
-        dataSplit.removeEventListener("th-output-changed", callback);
-        callback = function(e) {
-          dataSplit.input.should.equal(input);
-          console.log("cb2");
-        };
-        dataSplit.addEventListener("th-output-changed", callback);
-
+ 
         // change input
         dataSplit.input = input;
 
-        // check th-output-changed event
-        asyncPlatformFlush(function() {
+        flush(function() {
+          dataSplit.input.should.equal(input);
           done();
         });
       });
 
 
       test("assign a splitCol and output the result", function(done) {
-        var splitCol = "label";
 
-        dataSplit.removeEventListener("th-output-changed", callback);
-        callback = function(e) {
+        // change splitCol
+        var splitCol = "label";
+        dataSplit.splitCol = splitCol;
+
+        flush(function() {
           dataSplit.splitCol.should.equal(splitCol);
           var player = dataSplit.output[0].split1;
           var pos = dataSplit.output[0].split2;
-          console.log(player);
           player.should.equal("Marshawn Lynch");
           pos.should.equal("RB");
-        };
-        dataSplit.addEventListener("th-output-changed", callback);
+          done();
+        });
 
+      });
+
+      test("change splitColNames", function(done) {
 
         // change splitCol
-        dataSplit.splitCol = splitCol;
+        var splitColNames = ["Player", "Position"];
+        dataSplit.splitColNames = splitColNames;
 
-        // check th-output-changed event
-        asyncPlatformFlush(function() {
+        flush(function() {
+          var newColNames = Object.keys(dataSplit.output[0]);
+          newColNames[1].should.equal(splitColNames[0]);
+          newColNames[2].should.equal(splitColNames[1]);
           done();
         });
       });
 
       test("change splitColNames", function(done) {
+
+        // change splitColNames
         var splitColNames = ["Player", "Position"];
-
-        dataSplit.removeEventListener("th-output-changed", callback);
-        callback = function(e) {
-          var newColNames = Object.keys(dataSplit.output[0]);
-          console.log(newColNames);
-          newColNames[1].should.equal(splitColNames[0]);
-          newColNames[2].should.equal(splitColNames[1]);
-        };
-        dataSplit.addEventListener("th-output-changed", callback);
-
-        // change splitCol
         dataSplit.splitColNames = splitColNames;
 
-        // check th-output-changed event
-        asyncPlatformFlush(function() {
-          done();
-        });
-      });
-
-      test("assign splitCol", function(done) {
-        var splitColNames = ["Player", "Position"];
-
-        dataSplit.removeEventListener("th-output-changed", callback);
-        callback =function(e) {
+        flush(function() {
           var newColNames = Object.keys(dataSplit.output[0]);
           newColNames[1].should.equal(splitColNames[0]);
           newColNames[2].should.equal(splitColNames[1]);
-        };
-        dataSplit.addEventListener("th-output-changed", callback);
-
-        // change splitCol
-        dataSplit.splitColNames = splitColNames;
-
-        // check th-output-changed event
-        asyncPlatformFlush(function() {
           done();
         });
       });

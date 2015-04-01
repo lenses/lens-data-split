@@ -1,32 +1,26 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../core-collapse/core-collapse.html">
 <link rel="import" href="../core-selector/core-selector.html">
 <link rel="import" href="../core-input/core-input.html">
 <!--
-A Thelma component to split a column into columns based on a string separator
+A Lenses data component to split a column into columns based on a string separator
 
 ##### Example
 
     <lens-data-split></lens-data-split>
 
 @element lens-data-split
-@group Lenses transform component
+@group Lenses data component
 @blurb Split data into multiple columns. Splits at the separator, defaults to comma
 @status alpha
-@homepage http://thelmanews.github.io/lens-data-split/index.html
+@homepage http://lenses.github.io/lens-data-split/index.html
 -->
 
 <polymer-element name="lens-data-split" attributes="input output splitCol splitChar splitColNames">
   <template>
     <link rel="stylesheet" href="lens-data-split.css">
-    <div class="th-container">
 
-      <template if="{{!included}}">
-        <core-icon-button icon="perm-data-setting" on-click="{{showControls}}"></core-icon-button>
-      </template>
+    <div class="th-container th-data">
 
-      <!--core-collapse shows table settings. Toggled off by default-->
-      <core-collapse id="ctrl_collapse" opened="false">
         <p class="info">Split a column into multiple based on split character.</p>
         <label class="label" for="func_selector">Filter on column:</label>
         <core-selector class="selector" id="value_selector" selected="{{splitCol}}" valueattr="label">
@@ -40,7 +34,7 @@ A Thelma component to split a column into columns based on a string separator
         <template repeat="{{name, index in splitColNames}}">
           <input is="core-input" value="{{name}}" _index="{{index}}" class="col-name" on-change="{{_splitNameChanged}}" >
         </template>
-      </core-collapse>
+
     </div>
 
   </template>
@@ -100,10 +94,6 @@ A Thelma component to split a column into columns based on a string separator
 
       // Called when <lens-data-split> element is created.
       ready: function () {
-        //open the collapse if the component is included
-        if(this.included && !this.$.ctrl_collapse.opened) {
-          this.$.ctrl_collapse.toggle();
-        }
       },
 
       // Change watcher for input attribute. Triggered whenever input is changed
@@ -155,10 +145,6 @@ A Thelma component to split a column into columns based on a string separator
         }
       },
 
-      outputChanged: function() {
-        this.fire("th-output-changed", this);
-      },
-
       // Creates defualt column names (split1, split2 etc.)
       _generateColumnNames: function(n) {
         for(var i=0; i<n; i++) {
@@ -177,18 +163,7 @@ A Thelma component to split a column into columns based on a string separator
         this.splitColNames[index] = selection.value;
         //TODO: map the output and rename column instead of going through the process again
         this._calculateOutput();
-      },
-
-      // 
-      /**
-       *  Toggles whether the settings box is open or closed.
-       *  Defaults to closed.
-       *  
-       *  @method showControls
-       */
-      showControls: function(e) {
-        this.$.ctrl_collapse.toggle();
-      },
+      }
 
     });
   </script>
