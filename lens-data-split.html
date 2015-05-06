@@ -99,6 +99,7 @@ A Lenses data component to split a column into columns based on a string separat
       // Change watcher for input attribute. Triggered whenever input is changed
       inputChanged: function() {
         var self = this;
+        console.log("input changed data split");
         var firstItem = self.input[0];
         if(!firstItem) {
           return;
@@ -118,8 +119,10 @@ A Lenses data component to split a column into columns based on a string separat
       // Calculates output from input based on settings
       _calculateOutput: function() {
         var self = this;
-        if(self.splitCol && self.splitChar && self.splitChar.length>0)
-        {
+        if(self.splitCol && self.splitChar && self.splitChar.length>0) {
+          if (!self.input || !self.input.length){ 
+            return; 
+          }
           if(typeof self.input[0][self.splitCol]==="string") {  //TODO: catch exception for split instead?
 
             self.output = self.input.map(function(item) {
