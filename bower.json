@@ -11,6 +11,6 @@
     "core-component-page": "Polymer/core-component-page#~0.5.5"
   },
   "devDependencies": {
-    "web-component-tester": "Polymer/web-component-tester#^1.1.0"
+    "web-component-tester": "Polymer/web-component-tester#^2.2.6"
   }
 }
