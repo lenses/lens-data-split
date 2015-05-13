@@ -19,7 +19,7 @@ A Lenses data component to split a column into columns based on a string separat
   <template>
     <link rel="stylesheet" href="lens-data-split.css">
 
-    <div class="th-container th-data">
+    <div class="lens-container lens-data">
 
         <p class="info">Split a column into multiple based on split character.</p>
         <label class="label" for="func_selector">Filter on column:</label>
@@ -99,7 +99,6 @@ A Lenses data component to split a column into columns based on a string separat
       // Change watcher for input attribute. Triggered whenever input is changed
       inputChanged: function() {
         var self = this;
-        console.log("input changed data split");
         var firstItem = self.input[0];
         if(!firstItem) {
           return;
