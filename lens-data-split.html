@@ -23,7 +23,7 @@ A Lenses data component to split a column into columns based on a string separat
 
         <p class="info">Split a column into multiple based on split character.</p>
         <label class="label" for="func_selector">Filter on column:</label>
-        <iron-selector class="selector" id="value_selector" selected="{{splitCol}}" attr-for-selected="label">
+        <iron-selector class="selector" id="value_selector" selected="{{splitColumn}}" attr-for-selected="label">
           <template is="dom-repeat" items="{{_dataAttributes}}" as="attr">
             <div class="col" label="{{attr}}">{{attr}}</div>
           </template>
@@ -31,7 +31,7 @@ A Lenses data component to split a column into columns based on a string separat
         <label class="label">split by:</label>
         <input is="core-input" value="{{splitChar::input}}">
         <label class="label">New column labels:</label>
-        <template is="dom-repeat" items="{{splitColNames}}" as="name" index-as="index">
+        <template is="dom-repeat" items="{{splitColumnNames}}" as="name" index-as="index">
           <input is="core-input" value="{{name::input}}" _index="{{index}}" class="col-name" on-change="_splitNameChanged">
         </template>
 
@@ -55,7 +55,7 @@ A Lenses data component to split a column into columns based on a string separat
         notify: true,
         observer: '_calculateOutput'
       },
-      splitCol: {
+      splitColumn: {
         type: Array,
         value: function () {
           return [];
@@ -63,7 +63,7 @@ A Lenses data component to split a column into columns based on a string separat
         notify: true,
         observer: '_calculateOutput'
       },
-      splitColNames: {
+      splitColumnNames: {
         type: Array,
         value: function () {
           return [];
@@ -96,15 +96,15 @@ A Lenses data component to split a column into columns based on a string separat
     // Calculates output from input based on settings
     _calculateOutput: function () {
       var self = this;
-      if (self.splitCol && self.splitChar && self.splitChar.length > 0) {
+      if (self.splitColumn && self.splitChar && self.splitChar.length > 0) {
         if (!self.input || !self.input.length) {
           return;
         }
-        if (typeof self.input[0][self.splitCol] === 'string') {
+        if (typeof self.input[0][self.splitColumn] === 'string') {
           //TODO: catch exception for split instead?
           self.output = self.input.map(function (item) {
-            var splits = item[self.splitCol].split(self.splitChar);
-            if (self.splitColNames.length === 0 || self.splitColNames.length !== splits.length) {
+            var splits = item[self.splitColumn].split(self.splitChar);
+            if (self.splitColumnNames.length === 0 || self.splitColumnNames.length !== splits.length) {
               self._generateColumnNames(splits.length);
             }  //clone item
             //clone item
@@ -114,7 +114,7 @@ A Lenses data component to split a column into columns based on a string separat
               ret[key] = item[key];
             });
             splits.forEach(function (split, index) {
-              ret[self.splitColNames[index]] = splits[index].trim();
+              ret[self.splitColumnNames[index]] = splits[index].trim();
             });
             return ret;
           });
@@ -129,18 +129,18 @@ A Lenses data component to split a column into columns based on a string separat
     // Creates defualt column names (split1, split2 etc.)
     _generateColumnNames: function (n) {
       for (var i = 0; i < n; i++) {
-        if (!this.splitColNames[i]) {
-          this.splitColNames[i] = 'split' + (i + 1);
+        if (!this.splitColumnNames[i]) {
+          this.splitColumnNames[i] = 'split' + (i + 1);
         }
       }
-      if (n < this.splitColNames.length) {
-        this.splitColNames.splice(0, n);
+      if (n < this.splitColumnNames.length) {
+        this.splitColumnNames.splice(0, n);
       }
     },
     // Triggered when user changes the new column names
     _splitNameChanged: function (detail, e, selection) {
       var index = selection.getAttribute('index');
-      this.splitColNames[index] = selection.value;  //TODO: map the output and rename column instead of going through the process again
+      this.splitColumnNames[index] = selection.value;  //TODO: map the output and rename column instead of going through the process again
       //TODO: map the output and rename column instead of going through the process again
       this._calculateOutput();
     }
