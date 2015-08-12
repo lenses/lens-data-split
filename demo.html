@@ -1,9 +1,7 @@
-<!doctype html>
-<html>
-  <head>
+<!DOCTYPE html><html><head>
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>lens-data-split Demo</title>
-    <script src="../webcomponentsjs/webcomponents.js"></script>
+    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="lens-data-split.html">
 
     <style>
@@ -12,6 +10,28 @@
         font-size: 14px;
       }
 
+      .logo {
+        background: url('https://avatars3.githubusercontent.com/u/8629151?v=3&s=50') 0 0 no-repeat;
+        width: 50px;
+        height: 50px;
+        display: inline-block;
+        float: left;
+        margin-left: 5px;
+        margin-right: 15px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+
+      a, a:visited {
+        color: #333;
+      }
+
+      h1 {
+        font-size: 18px;
+        font-family: monaco;
+      }
       pre {
         border: 1px solid #EEE;
         font-size: 12px;
@@ -48,7 +68,7 @@
         position: relative;
       }
       html /deep/ input[is=core-input] {
-        border-bottom: 1px solid #E5E5E5 !important;
+        border: 1px solid #E5E5E5 !important;
       }
 
       .count {
@@ -60,21 +80,28 @@
     </style>
 
   </head>
-  <body unresolved>
+  <body unresolved="">
+    
+    <div class="logo">
+    </div> 
+    <h1>lens-data-zip</h1>
+    <p>
+      A '<a href="http://lenses.github.io/lenses-freeform/components/lenses-freeform/" target="_blank">lenses</a>'' component for zipping two datasets (like sql join). Source on <a href="https://github.com/lenses/lens-data-zip" target="_blank">Github</a>
+    </p>
 
-    <template id="auto-bind-demo" is="auto-binding">
+    <template id="auto-bind-demo" is="dom-bind">
 
       <section>
-        <label>Input:</label><span class="count">{{myinput.length}} records</span>
-        <pre id="input">{{myinput | json}}</pre>
+        <label>Input:</label><span class="count"><span>{{myinput.length}}</span> records</span>
+        <pre id="input">{{json(myinput)}}</pre>
       </section>
       <section class="component">
         <label>Component:</label>
         <lens-data-split id="component" input="{{myinput}}" output="{{myoutput}}"></lens-data-split>
       </section>
       <section>
-        <label>Output:</label><span class="count">{{myoutput.length}} records</span>
-        <pre>{{myoutput | json}}</pre>
+        <label>Output:</label><span class="count"><span>{{myoutput.length}}</span> records</span>
+        <pre id="output">{{json(myoutput)}}</pre>
       </section>
       
       <script>
@@ -82,11 +109,18 @@
         // input data
         var input = new Object([{"label":"Marshawn Lynch, RB"},{"label":"Dez Bryant, WR"},{"label":"Jamaal Charles, RB"},{"label":"Antonio Brown, WR"},{"label":"Jordy Nelson, WR"},{"label":"Arian Foster, RB"},{"label":"DeMarco Murray, RB"},{"label":"Eddie Lacy, RB"},{"label":"Antonio Gates, TE"},{"label":"Rob Gronkowski, TE"}]);
 
-        // show component controls
-        component.showControls();
+        var preInput = document.getElementById('input');
+        var preOutput = document.getElementById('output');
+
 
         //set the input
         component.input = input;
+        preInput.textContent = JSON.stringify(input, undefined, 2);
+
+        // update output
+        document.addEventListener('lens-output-changed', function(val) {
+          preOutput.textContent = JSON.stringify(val.detail, undefined, 2);
+        });
 
         //set the split column to be the first element in the input
         component.splitCol = Object.keys(input[0])[0];
@@ -94,6 +128,7 @@
 
       </script>
     </template>
-  </body>
+  
 
-</html>
+
+</body></html>

@@ -118,6 +118,9 @@ A Lenses data component to split a column into columns based on a string separat
             });
             return ret;
           });
+
+          self.fire('lens-output-changed', self.output);
+
         } else {
         }  //error
       }
