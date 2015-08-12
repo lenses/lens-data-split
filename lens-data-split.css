@@ -1,15 +1,15 @@
-core-selector {
+iron-selector {
   min-height: 10px;
   display: inline-block;
   max-height: 123px;
   overflow-y: scroll; 
 }
 
-core-selector .col {
+iron-selector .col {
   padding: 1px;
   border: 1px solid #EEE;
 }
-core-selector .core-selected {
+iron-selector .iron-selected {
   background-color: #ccc;
 
 }
